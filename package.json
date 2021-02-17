@@ -11,7 +11,9 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.0",
-    "swiper": "^6.4.11",
+    "node-sass": "^4.14.1",
+    "style-loader": "^2.0.0",
+    "swiper": "^5.4.5",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^4.1.1",
     "vue-cookie": "^1.1.4",
@@ -34,7 +36,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.32.6",
-    "sass-loader": "^11.0.0",
+    "sass-loader": "^7.3.1",
     "vue-template-compiler": "^2.6.11"
   }
 }
