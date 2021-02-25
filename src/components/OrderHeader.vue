@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: "order-header"
+  name: "order-header",
 };
 </script>
-<style lang="sass" scoped></style>
+<style lang="scss" scoped></style>
