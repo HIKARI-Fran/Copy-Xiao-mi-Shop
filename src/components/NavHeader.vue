@@ -20,7 +20,7 @@
           <a href="javascript:;" v-if="username">我的订单</a>
           <a href="javascript:;">消息通知</a>
           <a href="javascript:;" class="my-cart" @click="goToCart">
-            <span class="icon-cart"></span> 购物车
+            <span class="icon-cart"></span> 购物车({{ cartNum }})
           </a>
         </div>
       </div>
@@ -38,7 +38,7 @@
                 <li v-for="item in productList" :key="item.id">
                   <a href="javascript:;">
                     <div class="pro-img">
-                      <img :src="item.mainImage" alt="subtitle" />
+                      <img v-lazy="item.mainImage" alt="subtitle" />
                     </div>
                     <div class="pro-name">{{ item.name }}</div>
                     <div class="pro-price">{{ "¥" + item.price + "元" }}</div>
@@ -54,7 +54,7 @@
                 <li v-for="item in productList" :key="item.id">
                   <a href="javascript:;">
                     <div class="pro-img">
-                      <img :src="item.mainImage" alt="subtitle" />
+                      <img v-lazy="item.mainImage" alt="subtitle" />
                     </div>
                     <div class="pro-name">{{ item.name }}</div>
                     <div class="pro-price">{{ "¥" + item.price + "元" }}</div>
@@ -70,7 +70,7 @@
                 <li v-for="item in productList" :key="item.id">
                   <a href="javascript:;">
                     <div class="pro-img">
-                      <img :src="item.mainImage" alt="subtitle" />
+                      <img v-lazy="item.mainImage" alt="subtitle" />
                     </div>
                     <div class="pro-name">{{ item.name }}</div>
                     <div class="pro-price">{{ "¥" + item.price + "元" }}</div>
@@ -86,7 +86,7 @@
                 <li v-for="item in productList" :key="item.id">
                   <a href="javascript:;">
                     <div class="pro-img">
-                      <img :src="item.mainImage" alt="subtitle" />
+                      <img v-lazy="item.mainImage" alt="subtitle" />
                     </div>
                     <div class="pro-name">{{ item.name }}</div>
                     <div class="pro-price">{{ "¥" + item.price + "元" }}</div>
@@ -102,7 +102,7 @@
                 <li v-for="item in productList" :key="item.id">
                   <a href="javascript:;">
                     <div class="pro-img">
-                      <img :src="item.mainImage" alt="subtitle" />
+                      <img v-lazy="item.mainImage" alt="subtitle" />
                     </div>
                     <div class="pro-name">{{ item.name }}</div>
                     <div class="pro-price">{{ "¥" + item.price + "元" }}</div>
@@ -118,7 +118,7 @@
                 <li v-for="item in productList" :key="item.id">
                   <a href="javascript:;">
                     <div class="pro-img">
-                      <img :src="item.mainImage" alt="subtitle" />
+                      <img v-lazy="item.mainImage" alt="subtitle" />
                     </div>
                     <div class="pro-name">{{ item.name }}</div>
                     <div class="pro-price">{{ "¥" + item.price + "元" }}</div>
@@ -134,7 +134,7 @@
                 <li v-for="item in productList" :key="item.id">
                   <a href="javascript:;">
                     <div class="pro-img">
-                      <img :src="item.mainImage" alt="subtitle" />
+                      <img v-lazy="item.mainImage" alt="subtitle" />
                     </div>
                     <div class="pro-name">{{ item.name }}</div>
                     <div class="pro-price">{{ "¥" + item.price + "元" }}</div>
@@ -169,16 +169,23 @@ export default {
   data() {
     return {
       productList: [],
-      username: ""
     };
   },
   mounted() {
     this.getProductList();
   },
+  computed: {
+    username() {
+      return this.$store.state.username;
+    },
+    cartNum() {
+      return this.$store.state.cartNum;
+    },
+  },
   methods: {
     async getProductList() {
       const res = await this.$axios.get("/products", {
-        params: { pageSize: 6, categoryId: 100012 }
+        params: { pageSize: 6, categoryId: 100012 },
       });
       this.productList = res.list;
     },
@@ -190,8 +197,8 @@ export default {
     },
     goToCart() {
       this.$router.push("/cart");
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

@@ -65,9 +65,50 @@
           <div class="swiper-button-next"></div>
         </swiper>
       </div>
-      <div class="ads-box"></div>
-      <div class="banner"></div>
-      <div class="product-box"></div>
+      <div class="ads-box">
+        <a href="javascript:;" v-for="(item, index) in adsList" :key="index">
+          <img v-lazy="item.img" alt="" />
+        </a>
+      </div>
+      <div class="banner">
+        <a href="javascript:;">
+          <img v-lazy="'/imgs/banner-1.png'" alt="" />
+        </a>
+      </div>
+    </div>
+    <div class="product-box">
+      <div class="container">
+        <h2>手机</h2>
+        <div class="wrapper">
+          <div class="banner-left">
+            <a href="javascript:;">
+              <img
+                v-lazy="
+                  'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/cb1bd61ad71c45a4f67f09b075463944.jpeg?thumb=1&w=234&h=614&f=webp&q=90'
+                "
+                alt=""
+              />
+            </a>
+          </div>
+          <div class="banner-right">
+            <div class="list-right" v-for="(arr, i) in phoneList" :key="i">
+              <div class="list-item" v-for="(item, j) in arr" :key="j">
+                <span :class="{ new: j % 2 == 0, kill: j % 2 == 1 }">{{
+                  j % 2 == 0 ? "新品" : "秒杀"
+                }}</span>
+                <div class="product-img">
+                  <a href="javascript:;">
+                    <img v-lazy="item.mainImage" alt="" />
+                  </a>
+                </div>
+                <h3>{{ item.name }}</h3>
+                <p class="product-info">{{ item.subtitle }}</p>
+                <p class="price">{{ item.price }}元</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <service-bar></service-bar>
   </div>
@@ -78,6 +119,7 @@ import ServiceBar from "../components/serviceBar";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 // import style (<= Swiper 5.x)
 import "swiper/css/swiper.css";
+
 export default {
   name: "index",
   components: {
@@ -120,7 +162,42 @@ export default {
         [0, 0, 0, 0],
         [0, 0, 0, 0],
       ],
+      adsList: [
+        {
+          id: 33,
+          img: "/imgs/ads/ads-1.png",
+        },
+        {
+          id: 48,
+          img: "/imgs/ads/ads-2.jpg",
+        },
+        {
+          id: 45,
+          img: "/imgs/ads/ads-3.png",
+        },
+        {
+          id: 47,
+          img: "/imgs/ads/ads-4.jpg",
+        },
+      ],
+      phoneList: [
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+      ],
     };
+  },
+
+  mounted() {
+    this.getPhoneList();
+  },
+  methods: {
+    async getPhoneList() {
+      let res = await this.$axios.get("/products", {
+        params: { categoryId: 100012, pageSize: 8 },
+      });
+      // console.log(res);
+      this.phoneList = [res.list.slice(0, 4), res.list.slice(4, 8)];
+    },
   },
 };
 </script>
@@ -185,11 +262,13 @@ export default {
                     z-index: 30;
                     a {
                       color: #000;
+
                       &:after {
                         display: none;
                       }
                       &:hover {
                         background-color: #fff;
+                        color: #ff6600;
                       }
                       img {
                         width: 35px;
@@ -233,6 +312,100 @@ export default {
           right: 30px;
           bottom: 20px;
           width: 200px;
+        }
+      }
+    }
+    .ads-box {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+      margin-bottom: 31px;
+      img {
+        width: 296px;
+        height: 167px;
+      }
+    }
+    .banner {
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  .product-box {
+    background-color: #f5f5f5;
+    padding: 30px 0 50px;
+    .container {
+      h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+      }
+      .wrapper {
+        display: flex;
+        .banner-left {
+          width: 224px;
+          height: 619px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .banner-right {
+          margin-left: 16px;
+          width: 986px;
+          .list-right {
+            display: flex;
+            justify-content: space-between;
+            height: 302px;
+            margin-bottom: 14px;
+            .list-item {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              background-color: #fff;
+              width: 236px;
+              height: 302px;
+              span {
+                display: inline-block;
+                height: 24px;
+                width: 67px;
+                line-height: 24px;
+                font-size: 14px;
+                text-align: center;
+                color: #fff;
+                margin-bottom: 20px;
+                &.new {
+                  background-color: #7ecf68;
+                }
+                &.kill {
+                  background-color: #e82626;
+                }
+              }
+              .product-img {
+                margin-bottom: 5px;
+                a {
+                  display: inline-block;
+                  img {
+                    height: 150px;
+                  }
+                }
+              }
+              h3 {
+                font-size: 14px;
+              }
+              .product-info {
+                color: #999999;
+                font-size: 12px;
+                margin: 6px 0 13px;
+              }
+              .price {
+                font-size: 16px;
+                color: #f20a0a;
+                font-weight: bold;
+                cursor: pointer;
+              }
+            }
+          }
         }
       }
     }
